@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import useKeyboard from '@rnhooks/keyboard';
 import {
   Text,
   useStyleSheet,
@@ -35,6 +36,7 @@ function SignInScreen() {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const {authLoading, actionSignIn} = useAuth();
+  const [visible] = useKeyboard();
   const navigator = useNavigation();
   const screenStyles = useStyleSheet(styles);
   const theme = useTheme();
@@ -68,7 +70,7 @@ function SignInScreen() {
     <KeyboardAvoidingView
       style={screenStyles.layout}
       contentContainerStyle={screenStyles.layout}
-      behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
+      behavior={Platform.OS === 'android' ? undefined : 'padding'}>
       <StatusBar
         backgroundColor={Platform.OS === 'android' ? '#F4F4F4' : undefined}
         barStyle="dark-content"
@@ -144,16 +146,18 @@ function SignInScreen() {
         </Button>
       </View>
 
-      <View style={screenStyles.bottom}>
-        <Button
-          disabled={authLoading}
-          appearance="ghost"
-          size="large"
-          style={styles.button}
-          onPress={() => navigator.navigate('SignUp')}>
-          Não possui conta? Crie grátis!
-        </Button>
-      </View>
+      {!visible && (
+        <View style={screenStyles.bottom}>
+          <Button
+            disabled={authLoading}
+            appearance="ghost"
+            size="large"
+            style={styles.button}
+            onPress={() => navigator.navigate('SignUp')}>
+            Não possui conta? Crie grátis!
+          </Button>
+        </View>
+      )}
     </KeyboardAvoidingView>
   );
 }

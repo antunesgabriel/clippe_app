@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import useKeyboard from '@rnhooks/keyboard';
 import {
   Layout,
   Text,
@@ -15,6 +16,7 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -38,6 +40,7 @@ function SignUpScreen() {
 
   const {authLoading, actionSignUp} = useAuth();
   const navigator = useNavigation();
+  const [visible] = useKeyboard();
   const screenStyles = useStyleSheet(styles);
   const theme = useTheme();
   const {control, handleSubmit, errors} = useForm<SignUpFields>({
@@ -69,10 +72,7 @@ function SignUpScreen() {
 
   return (
     <Layout style={screenStyles.layout}>
-      <KeyboardAvoidingView
-        style={screenStyles.layout}
-        contentContainerStyle={screenStyles.layout}
-        behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
+      <ScrollView style={{flex: 1}} contentContainerStyle={screenStyles.layout}>
         <StatusBar
           backgroundColor={Platform.OS === 'android' ? '#F4F4F4' : undefined}
           barStyle="dark-content"
@@ -168,18 +168,19 @@ function SignUpScreen() {
             Continuar
           </Button>
         </View>
-      </KeyboardAvoidingView>
-
-      <View style={screenStyles.bottom}>
-        <Button
-          disabled={authLoading}
-          appearance="ghost"
-          size="large"
-          style={styles.button}
-          onPress={() => navigator.goBack()}>
-          Já possui conta? Faça login!
-        </Button>
-      </View>
+        {!visible && (
+          <View style={screenStyles.bottom}>
+            <Button
+              disabled={authLoading}
+              appearance="ghost"
+              size="large"
+              style={styles.button}
+              onPress={() => navigator.goBack()}>
+              Já possui conta? Faça login!
+            </Button>
+          </View>
+        )}
+      </ScrollView>
     </Layout>
   );
 }
