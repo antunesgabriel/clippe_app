@@ -1,4 +1,5 @@
 import {StyleService} from '@ui-kitten/components';
+import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 const styles = StyleService.create({
   layout: {
@@ -8,10 +9,11 @@ const styles = StyleService.create({
     backgroundColor: '#F4F4F4',
   },
   box: {
-    flex: 1,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    height: responsiveHeight(25),
+    marginBottom: responsiveHeight(6),
   },
   name: {
     marginLeft: 10,

@@ -63,9 +63,7 @@ export function AuthProvider({children}: Props): React.ReactElement {
       setAuthLoading(false);
     } catch (err) {
       setAuthLoading(false);
-      callback(
-        err?.response?.data?.errors[0]?.message || 'Um erro inexperado ocorreu',
-      );
+      callback(err.message || 'Um erro inexperado ocorreu');
     }
   };
 
