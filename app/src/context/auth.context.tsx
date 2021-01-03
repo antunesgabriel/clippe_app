@@ -106,9 +106,9 @@ export function AuthProvider({children}: Props): React.ReactElement {
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      const {data} = await api.get('/authenticated');
+      await api.get('/authenticated');
 
-      __DEV__ && console.log('Authenticated', data.ok);
+      // __DEV__ && console.log('Authenticated', data.ok);
 
       setAuthenticated(true);
       setAuthLoading(false);

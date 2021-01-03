@@ -125,6 +125,7 @@ function ClipScreen() {
                 onChangeText={onChange}
                 status={errors.content ? 'danger' : 'basic'}
                 value={value}
+                textAlignVertical="top"
               />
             )}
           />

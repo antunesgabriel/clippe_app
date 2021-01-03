@@ -1,6 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import {Layout, useStyleSheet} from '@ui-kitten/components';
 import {Animated, Easing, Platform, StatusBar} from 'react-native';
+// import VersionCheck from 'react-native-version-check';
 import {useNavigation} from '@react-navigation/native';
 
 import Logo from 'src/components/logo/logo.component';
