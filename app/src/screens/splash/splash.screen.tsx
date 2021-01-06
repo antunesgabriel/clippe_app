@@ -1,11 +1,12 @@
 import React, {useRef, useEffect} from 'react';
 import {Layout, useStyleSheet} from '@ui-kitten/components';
 import {Animated, Easing, Platform, StatusBar} from 'react-native';
-// import VersionCheck from 'react-native-version-check';
+import VersionCheck from 'react-native-version-check';
 import {useNavigation} from '@react-navigation/native';
 
 import Logo from 'src/components/logo/logo.component';
 import {useAuth} from 'src/hooks/useAuth';
+import {addToast} from 'src/utils/addToast';
 
 import styles from './splash.styles';
 
@@ -32,8 +33,35 @@ function SplashScreen() {
         useNativeDriver: false,
         easing: Easing.bezier(0.165, 0.84, 0.44, 1),
       }),
-    ]).start(() => initialization(navigator));
+    ]).start(verifyUpdate);
   });
+
+  const verifyUpdate = async () => {
+    try {
+      const currentVersion = VersionCheck.getCurrentVersion();
+
+      const latestVersion = await VersionCheck.getLatestVersion({
+        provider: Platform.OS === 'android' ? 'playStore' : 'appStore',
+      });
+
+      const res = await VersionCheck.needUpdate({
+        currentVersion,
+        latestVersion,
+      });
+
+      // __DEV__ && console.log('VERSIONS', currentVersion, latestVersion);
+
+      initialization &&
+        initialization(navigator, res.isNeeded ? res.storeUrl : undefined);
+    } catch (err) {
+      addToast(
+        'Ops!',
+        'Não conseguimos verificar se a atualizaçÕes do Clipes App 🥺',
+        'info',
+      );
+      initialization && initialization(navigator, undefined);
+    }
+  };
 
   return (
     <Layout style={splashStyles.layout}>

@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, SafeAreaView, StatusBar} from 'react-native';
+import {View, SafeAreaView, StatusBar, Linking} from 'react-native';
 import {useStyleSheet, useTheme, Text, Button} from '@ui-kitten/components';
+import {useRoute} from '@react-navigation/native';
 
 import {styles} from './update.styles';
 import Logo from 'src/components/logo/logo.component';
@@ -8,6 +9,12 @@ import Logo from 'src/components/logo/logo.component';
 function UpdateScreen() {
   const screenStyles = useStyleSheet(styles);
   const theme = useTheme();
+
+  const routes = useRoute<any>();
+
+  const onPressUpdate = async () => {
+    Linking.openURL(routes?.params?.storeLink);
+  };
 
   return (
     <View style={screenStyles.container}>
@@ -34,7 +41,11 @@ function UpdateScreen() {
               Venha ver o que temos de novidades 😜
             </Text>
 
-            <Button style={screenStyles.button} size="large">
+            <Button
+              style={screenStyles.button}
+              size="large"
+              disabled={!routes?.params?.storeLink}
+              onPress={onPressUpdate}>
               Atualizar
             </Button>
           </View>

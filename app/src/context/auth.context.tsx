@@ -40,7 +40,7 @@ export type AuthState = {
   actionSignUp(credetials: SignUpParam, callback: any): Promise<void>;
   actionLogout(): Promise<boolean>;
   setAuthLoading(status: boolean): void;
-  initialization(navigator: any): Promise<void>;
+  initialization(navigator: any, needUpdate: any): Promise<void>;
 };
 
 export const AuthContext = createContext<AuthState | null>(null);
@@ -96,7 +96,7 @@ export function AuthProvider({children}: Props): React.ReactElement {
     return true;
   };
 
-  const initialization = async (navigator: any) => {
+  const initialization = async (navigator: any, needUpdate = '') => {
     try {
       const token = await getToken();
 
@@ -113,14 +113,28 @@ export function AuthProvider({children}: Props): React.ReactElement {
       setAuthenticated(true);
       setAuthLoading(false);
 
-      navigator.navigate('Home');
+      navigator.navigate(
+        needUpdate ? 'Update' : 'Home',
+        needUpdate
+          ? {
+              storeLink: needUpdate,
+            }
+          : undefined,
+      );
     } catch (err) {
       addToast('Ops!', 'Sessão expirada, efetue login novamente.', 'info');
       await clearToken();
       setAuthenticated(false);
       setAuthLoading(false);
       setUserData(undefined);
-      navigator.navigate('SignIn');
+      navigator.navigate(
+        needUpdate ? 'Update' : 'SignIn',
+        needUpdate
+          ? {
+              storeLink: needUpdate,
+            }
+          : undefined,
+      );
     }
   };
 
