@@ -13,6 +13,7 @@ import api from 'src/config/api.config';
 import {register} from 'src/services/user.service';
 import {signIn} from 'src/services/auth.service';
 import {addToast} from 'src/utils/addToast';
+import {StackActions} from '@react-navigation/native';
 
 type Props = {
   children: React.ReactElement;
@@ -113,13 +114,15 @@ export function AuthProvider({children}: Props): React.ReactElement {
       setAuthenticated(true);
       setAuthLoading(false);
 
-      navigator.navigate(
-        needUpdate ? 'Update' : 'Home',
-        needUpdate
-          ? {
-              storeLink: needUpdate,
-            }
-          : undefined,
+      navigator.dispatch(
+        StackActions.replace(
+          needUpdate ? 'Update' : 'Home',
+          needUpdate
+            ? {
+                storeLink: needUpdate,
+              }
+            : undefined,
+        ),
       );
     } catch (err) {
       addToast('Ops!', 'Sessão expirada, efetue login novamente.', 'info');
@@ -127,13 +130,15 @@ export function AuthProvider({children}: Props): React.ReactElement {
       setAuthenticated(false);
       setAuthLoading(false);
       setUserData(undefined);
-      navigator.navigate(
-        needUpdate ? 'Update' : 'SignIn',
-        needUpdate
-          ? {
-              storeLink: needUpdate,
-            }
-          : undefined,
+      navigator.dispatch(
+        StackActions.replace(
+          needUpdate ? 'Update' : 'SignIn',
+          needUpdate
+            ? {
+                storeLink: needUpdate,
+              }
+            : undefined,
+        ),
       );
     }
   };

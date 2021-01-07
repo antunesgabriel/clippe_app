@@ -9,11 +9,11 @@ import {
   Button,
   Spinner,
 } from '@ui-kitten/components';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   View,
   TouchableWithoutFeedback,
   StatusBar,
-  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
@@ -67,10 +67,10 @@ function SignInScreen() {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={screenStyles.layout}
-      contentContainerStyle={screenStyles.layout}
-      behavior={Platform.OS === 'android' ? undefined : 'padding'}>
+    <KeyboardAwareScrollView
+      style={screenStyles.container}
+      enableAutomaticScroll
+      contentContainerStyle={screenStyles.layout}>
       <StatusBar
         backgroundColor={Platform.OS === 'android' ? '#F4F4F4' : undefined}
         barStyle="dark-content"
@@ -158,7 +158,7 @@ function SignInScreen() {
           </Button>
         </View>
       )}
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }
 

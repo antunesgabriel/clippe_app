@@ -2,11 +2,14 @@ import {StyleService} from '@ui-kitten/components';
 import {responsiveHeight} from 'react-native-responsive-dimensions';
 
 const styles = StyleService.create({
+  container: {
+    backgroundColor: '#F4F4F4',
+    flex: 1,
+  },
   layout: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: '#F4F4F4',
   },
   box: {
     alignSelf: 'center',

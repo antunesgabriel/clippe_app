@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import {Layout, useStyleSheet} from '@ui-kitten/components';
+import {Layout, useStyleSheet, Spinner} from '@ui-kitten/components';
 import {Animated, Easing, Platform, StatusBar} from 'react-native';
 import VersionCheck from 'react-native-version-check';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +12,7 @@ import styles from './splash.styles';
 
 function SplashScreen() {
   const fade = useRef(new Animated.Value(0)).current;
+  const loadingOpacity = useRef(new Animated.Value(0)).current;
 
   const {initialization} = useAuth();
   const splashStyles = useStyleSheet(styles);
@@ -30,6 +31,12 @@ function SplashScreen() {
         toValue: 0,
         delay: 50,
         duration: 1500,
+        useNativeDriver: false,
+        easing: Easing.bezier(0.165, 0.84, 0.44, 1),
+      }),
+      Animated.timing(loadingOpacity, {
+        toValue: 1,
+        duration: 1000,
         useNativeDriver: false,
         easing: Easing.bezier(0.165, 0.84, 0.44, 1),
       }),
@@ -69,9 +76,14 @@ function SplashScreen() {
         backgroundColor={Platform.OS === 'android' ? '#6C5CE7' : undefined}
         barStyle="light-content"
         animated
+        hidden={false}
       />
       <Animated.View style={{opacity: fade}}>
         <Logo />
+      </Animated.View>
+
+      <Animated.View style={{opacity: loadingOpacity}}>
+        <Spinner size="medium" status="basic" />
       </Animated.View>
     </Layout>
   );
